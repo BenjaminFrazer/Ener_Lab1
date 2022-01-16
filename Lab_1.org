@@ -1,0 +1,6 @@
+#+TITLE: Lab_1
+[[file:Ener.org][^Go Back]]
+* General
+** links
+- [[https://gla-my.sharepoint.com/:v:/g/personal/jin_yang_glasgow_ac_uk/EXqVvp8iT5NHuPiDp457V_kBwu5OXskIiBeEPEwM_YuBUQ?e=BGTPHO][video recording]]
+- [[file:Experiment 1 - Long Transmission Line.pdf][lab1 desc]]
