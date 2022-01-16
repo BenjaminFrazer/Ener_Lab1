@@ -1,6 +1,51 @@
 #+TITLE: Lab_1
+#+STARTUP: latexpreview
+#+INCLUDE: "~/.doom.d/orgReportHeader.org"
 [[file:Ener.org][^Go Back]]
 * General
 ** links
 - [[https://gla-my.sharepoint.com/:v:/g/personal/jin_yang_glasgow_ac_uk/EXqVvp8iT5NHuPiDp457V_kBwu5OXskIiBeEPEwM_YuBUQ?e=BGTPHO][video recording]]
 - [[file:Experiment 1 - Long Transmission Line.pdf][lab1 desc]]
+* Theory
+** Surge Impedance
+#+NAME: eqSurgeImpedance
+\begin{align}
+Z_0= \sqrt{\frac{L}{C}}
+\end{align}
+Where L and C are the line capacitance and reactance. [fn::since this is given as a fraction it doesn't matter weather this is given as a per unit length value or as a total value]
+** Electrical Length
+This is effectively a measure of the amount of wavelengths of a particular frequency fit into a length of conductor. Electrical length is given by Equation ref:eqElectricalLength.
+#+NAME: eqElectricalLength
+\begin{align}
+\theta=\omega\sqrt{LC}
+\end{align}
+A value of \(\theta = 2\pi\) would imply a single wavelength, however even for very long lines, typically values are \(\ll 2\pi\).
+** Open Circuit Transmission line Voltage distribution
+Voltage distribution along the line is given by
+#+NAME: eqVoltageDist
+\begin{align}
+V(x)= V_s \frac{\cos{(\theta(1-x/a))}}
+{\cos{\theta}}
+\end{align}
+Where x is defined as the distance from the sending end, a is the line length, and \(V_s\) is the phasor voltage at the sending end. setting \(x=a\) and expression is derived for the voltage at the receiving end.
+#+NAME: eqOpenCircuitRecEndV
+\begin{align}
+V_r =V(x=a) = \frac{V_s}{\cos{\theta}}
+\end{align}
+Since we assume that typical values of angle are \(\ll2\pi\) we know that as \theta grows we expect \(V_r\) to increase from being exactly equal to \(V_s\) to a value \(\ge V_s\)
+** Matched Impedance Transmission line Voltage Distribution
+The voltage profile for a line terminated in a matched impedance \(Z_0\) would yield a perfectly flat voltage distribution i.e. \(V(x) = V_s = V_r\). For any impedance greater than the surge impedance \((Z_0)\)  the voltage will tend to rise at the end of the transmission line while lower load impedance will cause the voltage profile in the line to sag leading to lower \(V_r\). [fn:: this can be expressed also as higher voltage for loads lower than the surge load where \(surge\: load \propto 1/Z_l\)]
+*** Reactive Power Consumption
+When the load impedance is matched to the surge impedance \((Z_0=Z_l)\), the reactive power consumption of the line is zero. When \(Z_l > Z_0\) the line generates reactive power whereas when \( Z_l < Z_0\) the line consumes reactive power.
+* Experiment
+** Line Parameters
+Line parameters are given by
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Model Transmission Line Parameters
+#+NAME: tabLineParams
+| C (\mu F) | L (mH) | f (Hz) | \omega (Rad/s) |
+|---------+--------+--------+-----------|
+|    0.02 |   7.29 |    700 |    4398.1 |
+#+TBLFM: @2$4=$3*2*3.1415
+** Surge Impedance (Part a)
+Line surge impedance is calculated according to Equation ref:eqSurgeImpedance and the line parameters given in Table ref:tabLineParams.
