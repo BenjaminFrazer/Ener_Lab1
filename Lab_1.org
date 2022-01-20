@@ -6,6 +6,8 @@
 ** links
 - [[https://gla-my.sharepoint.com/:v:/g/personal/jin_yang_glasgow_ac_uk/EXqVvp8iT5NHuPiDp457V_kBwu5OXskIiBeEPEwM_YuBUQ?e=BGTPHO][video recording]]
 - [[file:Experiment 1 - Long Transmission Line.pdf][lab1 desc]]
+** Terminology
+- DVM :: Digital Volt Meter
 * Theory
 ** Surge Impedance
 #+NAME: eqSurgeImpedance
@@ -43,11 +45,21 @@ Line parameters are given by Table ref:tabLineParams:
 #+ATTR_LATEX: placement [H] :booktabs t:
 #+caption: Per section model transmission line parameters
 #+NAME: tabLineParams
-|   | C_Sect (\mu F) | C_Tot (\mu F)   | L_Sect (mH)   | L_tot (mH)   | N_Sections   | f (Hz)   | \omega (Rad/s) |
-|---+--------------+---------------+---------------+--------------+--------------+----------+-----------|
-| _ | C_Sect_uF    | C_Tot_uF      | L_Sect_mH     | L_Tot_mH     | N_Sections   | f_Hz     | w_Rads    |
-| # | 0.02         | 0.02          | 7.29          | 7.29         | 10           | 45.80307 | 287.78069 |
-#+TBLFM: C_Tot_uF=$C_Sect_uF::L_Tot_mH=$L_Sect_mH::w_Rads=$f_Hz*2*3.1415
+|   | C_Sect (\mu F) | C_Tot (\mu F) | L_Sect (mH) | L_tot (mH) | N_Sections |
+|---+--------------+-------------+-------------+------------+------------|
+| _ | C_Sect_uF    | C_Tot_uF    | L_Sect_mH   | L_Tot_mH   | N_Sections |
+| # | 0.02         | 0.2         | 7.29        | 72.9       | 10         |
+#+TBLFM: $C_Tot_uF=$C_Sect_uF*$N_Sections::$L_Tot_mH=$L_Sect_mH*$N_Sections
+** Experimental Parameters
+Table
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Signal generator settings
+#+NAME: tabSigGen
+|   | f (Hz) | \omega (Rad/s) | V_Src (V_pp) | V_Src (RMS) |
+|---+--------+-----------+--------------+-------------|
+| _ | f_Hz   | w_Rads    | srcVol_Vpp   | srcVol_Vrms |
+| # | 700    | 4398.1    | 10           | 3.5355339   |
+#+TBLFM:$w_Rads=$f_Hz*2*3.1415::$srcVol_Vrms=($srcVol_Vpp/2)*(1/sqrt(2))
 ** Surge Impedance (Part a)
 Line surge impedance is calculated according to Equation ref:eqSurgeImpedance and the line parameters given in Table ref:tabLineParams. Table shows the resulting surge impedance:
 #+ATTR_LATEX: placement [H] :booktabs t:
@@ -59,4 +71,57 @@ Line surge impedance is calculated according to Equation ref:eqSurgeImpedance an
 | # | 1.6563467e-3            |
 #+TBLFM: @3$2=usimplify(sqrt((remote(tabLineParams,$C_Sect_uF) 10^-6 )/(remote(tabLineParams,$L_Sect_mH) 10^-3 )))
 ** Electrical length (Part b)
-Electrical length is calculated from Equation ref:eqElectricalLength and the line parameters given in Table ref:tabLineParams
+Electrical length is calculated from Equation ref:eqElectricalLength and the line total line parameters given in Table ref:tabLineParams. The results of the Calculation are shown in Table ref:tabElecLength.
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Model Transmission line calculated Electrical Length according to Equation ref:eqElectricalLength and Transmission line parameters in ref:tabLineParams.
+#+NAME: tabElecLength
+|   | \theta (Rad)   | \theta (Deg) |
+|---+-----------+---------|
+| _ | LElec_Rad |         |
+| # | 0.5311    | 30.4307 |
+#+TBLFM: $3=($2/3.1415)*180;%0.4f::$LElec_Rad=remote(tabSigGen,$w_Rads)* sqrt(remote(tabLineParams,$C_Tot_uF)*remote(tabLineParams,$L_Tot_mH) 10^-6 10^-3);%0.4f
+** Open Circuit Test (Part c)
+*** Procedure
+- Freq of signal gen set to 700Hz
+- Output voltage set to 10V_pp
+- Oscilloscope range to 2V/Division
+- DVM used to measure RMS voltage along the line at the ten intervals
+-
+*** Results
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Voltage Measurements along the model Transmission Line
+#+NAME:tabVoltDistResults
+|   | Measurement # | Measured Voltage (V) |   V/V_Src |
+|---+---------------+----------------------+-----------|
+| ! |        N_Meas |          V_Meas_Vrms | Vratio_Pu |
+| # |             0 |            3.5355339 |        1. |
+| # |             1 |                3.618 | 1.0233249 |
+| # |             2 |                3.715 | 1.0507607 |
+| # |             3 |                3.802 | 1.0753680 |
+| # |             4 |                3.878 | 1.0968640 |
+| # |             5 |                3.944 | 1.1155317 |
+| # |             6 |                3.997 | 1.1305223 |
+| # |             7 |                4.040 | 1.1426846 |
+| # |             8 |                4.070 | 1.1511698 |
+| # |             9 |                4.089 | 1.1565439 |
+| # |            10 |                4.095 | 1.1582409 |
+#+TBLFM: @3$3=remote(tabSigGen,$srcVol_Vrms)::$4=$V_Meas_Vrms/remote(tabSigGen,$srcVol_Vrms)
+
+#+begin_src octave :exports results :results file :var data=tabCalcSurgeImpedance
+figure( 1, "visible", "off" );
+title("test")
+hold on
+# user code
+
+#end user code
+print -dpng chart.png "-S1200,600";
+ans = "chart.png";
+#+end_src
+
+#+ATTR_ORG: :width 500
+#+ATTR_LATEX:  :width 400pt
+#+ATTR_LATEX: :placement [H]
+#+caption:
+#+label: fig:
+#+RESULTS:
+[[file:chart.png]]
