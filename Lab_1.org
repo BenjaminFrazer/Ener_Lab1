@@ -1,7 +1,7 @@
 #+TITLE: Lab_1
 #+STARTUP: latexpreview
+#+STARTUP: show2levels
 #+INCLUDE: "~/.doom.d/orgReportHeader.org"
-[[file:Ener.org][^Go Back]]
 * General
 ** links
 - [[https://gla-my.sharepoint.com/:v:/g/personal/jin_yang_glasgow_ac_uk/EXqVvp8iT5NHuPiDp457V_kBwu5OXskIiBeEPEwM_YuBUQ?e=BGTPHO][video recording]]
@@ -21,7 +21,7 @@ This is effectively a measure of the amount of wavelengths of a particular frequ
 \end{align}
 A value of \(\theta = 2\pi\) would imply a single wavelength, however even for very long lines, typically values are \(\ll 2\pi\).
 ** Open Circuit Transmission line Voltage distribution
-Voltage distribution along the line is given by
+Voltage distribution along the line is given by Equation ref:eqVoltageDist:
 #+NAME: eqVoltageDist
 \begin{align}
 V(x)= V_s \frac{\cos{(\theta(1-x/a))}}
@@ -39,13 +39,24 @@ The voltage profile for a line terminated in a matched impedance \(Z_0\) would y
 When the load impedance is matched to the surge impedance \((Z_0=Z_l)\), the reactive power consumption of the line is zero. When \(Z_l > Z_0\) the line generates reactive power whereas when \( Z_l < Z_0\) the line consumes reactive power.
 * Experiment
 ** Line Parameters
-Line parameters are given by
+Line parameters are given by Table ref:tabLineParams:
 #+ATTR_LATEX: placement [H] :booktabs t:
-#+caption: Model Transmission Line Parameters
+#+caption: Per section model transmission line parameters
 #+NAME: tabLineParams
-| C (\mu F) | L (mH) | f (Hz) | \omega (Rad/s) |
-|---------+--------+--------+-----------|
-|    0.02 |   7.29 |    700 |    4398.1 |
-#+TBLFM: @2$4=$3*2*3.1415
+|   | C_Sect (\mu F) | C_Tot (\mu F)   | L_Sect (mH)   | L_tot (mH)   | N_Sections   | f (Hz)   | \omega (Rad/s) |
+|---+--------------+---------------+---------------+--------------+--------------+----------+-----------|
+| _ | C_Sect_uF    | C_Tot_uF      | L_Sect_mH     | L_Tot_mH     | N_Sections   | f_Hz     | w_Rads    |
+| # | 0.02         | 0.02          | 7.29          | 7.29         | 10           | 45.80307 | 287.78069 |
+#+TBLFM: C_Tot_uF=$C_Sect_uF::L_Tot_mH=$L_Sect_mH::w_Rads=$f_Hz*2*3.1415
 ** Surge Impedance (Part a)
-Line surge impedance is calculated according to Equation ref:eqSurgeImpedance and the line parameters given in Table ref:tabLineParams.
+Line surge impedance is calculated according to Equation ref:eqSurgeImpedance and the line parameters given in Table ref:tabLineParams. Table shows the resulting surge impedance:
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Calculated Surge Impedance based on Equation ref:eqSurgeImpedance and Line Parameters in Table ref:tabLineParams
+#+NAME: tabCalcSurgeImpedance
+|   | Surge impedance Z_0 (\Omega) |
+|---+-------------------------|
+| _ | Z0_Ohm                  |
+| # | 1.6563467e-3            |
+#+TBLFM: @3$2=usimplify(sqrt((remote(tabLineParams,$C_Sect_uF) 10^-6 )/(remote(tabLineParams,$L_Sect_mH) 10^-3 )))
+** Electrical length (Part b)
+Electrical length is calculated from Equation ref:eqElectricalLength and the line parameters given in Table ref:tabLineParams
