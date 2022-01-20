@@ -91,21 +91,21 @@ Electrical length is calculated from Equation ref:eqElectricalLength and the lin
 #+ATTR_LATEX: placement [H] :booktabs t:
 #+caption: Voltage Measurements along the model Transmission Line
 #+NAME:tabVoltDistResults
-|   | Measurement # | Elec Len at point \theta | Measured Voltage (V) |   V/V_Src |
-|---+---------------+---------------------+----------------------+-----------|
-| _ |        N_Meas |           Elect_Len |          V_Meas_Vrms | Vratio_Pu |
-| # |             0 |              0.0000 |            3.5355339 |    1.0000 |
-| # |             1 |              0.0531 |            3.5355339 |    1.0000 |
-| # |             2 |              0.1062 |                3.715 |    1.0000 |
-| # |             3 |              0.1593 |                3.802 |    1.0000 |
-| # |             4 |              0.2124 |                3.878 |    1.0000 |
-| # |             5 |              0.2655 |                3.944 |    1.0000 |
-| # |             6 |              0.3186 |                3.997 |    1.0000 |
-| # |             7 |              0.3717 |                4.040 |    1.0000 |
-| # |             8 |              0.4248 |                4.070 |    1.0000 |
-| # |             9 |              0.4780 |                4.089 |    1.0000 |
-| # |            10 |              0.5311 |                4.095 |    1.0000 |
-#+TBLFM: @4$4=remote(tabSigGen,$srcVol_Vrms)::$5=$V_Meas_Vrms/remote(tabSigGen,$srcVol_Vrms);%0.4f::$3=remote(tabSigGen,$w_Rads)* sqrt(remote(tabLineParams,$C_Sect_uF*$2)*remote(tabLineParams,$L_Sect_mH*$2) 10^-6 10^-3);%0.4f
+|   | Measurement # | Elec Len at point \theta (Rad) | Measured Voltage (V) |   V/V_Src | V/V_Src Theory |
+|---+---------------+---------------------------+----------------------+-----------+----------------|
+| ! |        N_Meas |             Elect_Len_Rad |          V_Meas_Vrms | Vratio_Pu |  Vratio_The_Pu |
+| # |             0 |                    0.0000 |            3.5355339 |    1.0000 |         1.0000 |
+| # |             1 |                    0.0531 |                3.618 |    1.0233 |         1.0014 |
+| # |             2 |                    0.1062 |                3.715 |    1.0508 |         1.0057 |
+| # |             3 |                    0.1593 |                3.802 |    1.0754 |         1.0128 |
+| # |             4 |                    0.2124 |                3.878 |    1.0969 |         1.0230 |
+| # |             5 |                    0.2655 |                3.944 |    1.1155 |         1.0363 |
+| # |             6 |                    0.3186 |                3.997 |    1.1305 |         1.0530 |
+| # |             7 |                    0.3717 |                4.040 |    1.1427 |         1.0733 |
+| # |             8 |                    0.4248 |                4.070 |    1.1512 |         1.0975 |
+| # |             9 |                    0.4780 |                4.089 |    1.1565 |         1.1262 |
+| # |            10 |                    0.5311 |                4.095 |    1.1582 |         1.1598 |
+#+TBLFM: @3$4=remote(tabSigGen,$srcVol_Vrms)::$5=$4/remote(tabSigGen,$srcVol_Vrms);%0.4f::$3=remote(tabSigGen,$w_Rads)* sqrt(remote(tabLineParams,$C_Sect_uF*$2)*remote(tabLineParams,$L_Sect_mH*$2) 10^-6 10^-3);%0.4f::$6=1/(cos($3));R%0.4f
 
 #+BEGIN_SRC python :session :results file :output :var data=tabVoltDistResults :exports results :return saveName
 from tabulate import tabulate
@@ -113,7 +113,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 saveName="voltDistResults.png"
 df = pd.DataFrame(data[1:], columns=data[0])
-ha = df.plot(x="N_Meas",y="Vratio_Pu",figsize=(8, 4))
+ha = df.plot(x="N_Meas",y=["Vratio_Pu","Vratio_The_Pu"],figsize=(8, 4))
 plt.savefig(saveName)
 #+END_SRC
 
@@ -124,3 +124,5 @@ plt.savefig(saveName)
 #+label: fig:
 #+RESULTS:
 [[file:voltDistResults.png]]
+
+**** TODO program in the correct voltage profile
