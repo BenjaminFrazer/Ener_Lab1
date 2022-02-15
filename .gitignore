@@ -2,3 +2,9 @@
 /Lab_1.tex
 /Lab_1.bbl
 /Lab_1.aux
+*.tex.*
+/.auctex-auto/
+/.ob-jupyter/
+/.~lock.Experiment 1 - The Long Transmission Line - data.xlsx#
+/Experiment 1 - Long Transmission Line.mp4
+/Lab_1.synctex(busy)

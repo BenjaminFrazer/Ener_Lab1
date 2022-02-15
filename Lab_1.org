@@ -1,8 +1,10 @@
-#+TITLE: Lab_1
+#+TITLE: Lab 1
 #+STARTUP: latexpreview
 #+STARTUP: show2levels
+#+STARTUP: shrink
 #+INCLUDE: "~/.doom.d/orgReportHeader.org"
-* General
+#+LATEX_HEADER: \usepackage{tikz}
+*  General
 ** links
 - [[https://gla-my.sharepoint.com/:v:/g/personal/jin_yang_glasgow_ac_uk/EXqVvp8iT5NHuPiDp457V_kBwu5OXskIiBeEPEwM_YuBUQ?e=BGTPHO][video recording]]
 - [[file:Experiment 1 - Long Transmission Line.pdf][lab1 desc]]
@@ -14,7 +16,7 @@
 \begin{align}
 Z_0= \sqrt{\frac{L}{C}}
 \end{align}
-Where L and C are the line capacitance and reactance. [fn::since this is given as a fraction it doesn't matter weather this is given as a per unit length value or as a total value]
+Where L and C are the line capacitance and reactance. [fn::since this is given as a fraction it doesn't matter whether this is given as a per unit length value or as a total value]
 ** Electrical Length
 This is effectively a measure of the amount of wavelengths of a particular frequency fit into a length of conductor. Electrical length is given by Equation ref:eqElectricalLength.
 #+NAME: eqElectricalLength
@@ -51,7 +53,7 @@ Line parameters are given by Table ref:tabLineParams:
 | # | 0.02         | 0.2         | 7.29        | 72.9       | 10         |
 #+TBLFM: $C_Tot_uF=$C_Sect_uF*$N_Sections::$L_Tot_mH=$L_Sect_mH*$N_Sections
 ** Experimental Parameters
-Table
+Table ref:tabSigGen shows the experimental parameters used in this lab.
 #+ATTR_LATEX: placement [H] :booktabs t:
 #+caption: Signal generator settings
 #+NAME: tabSigGen
@@ -86,26 +88,27 @@ Electrical length is calculated from Equation ref:eqElectricalLength and the lin
 - Output voltage set to 10V_pp
 - Oscilloscope range to 2V/Division
 - DVM used to measure RMS voltage along the line at the ten intervals
--
-*** Results
+- phase angle of middle and end point measured
+*** Voltage distribution - Open circuit Termination
+The experiment results from the open-circuit measurement along with the theoretical voltage distribution calculated according to Equation ref:eqVoltageDist are tabulated in Table ref:tabVoltDistResults. The measured and actual voltage distribution on the line is shown in Figure ref:vTransmissionLine.
 #+ATTR_LATEX: placement [H] :booktabs t:
 #+caption: Voltage Measurements along the model Transmission Line
-#+NAME:tabVoltDistResults
-|   | Measurement # | Elec Len at point \theta (Rad) | Measured Voltage (V) |   V/V_Src | V/V_Src Theory |
-|---+---------------+---------------------------+----------------------+-----------+----------------|
-| ! |        N_Meas |             Elect_Len_Rad |          V_Meas_Vrms | Vratio_Pu |  Vratio_The_Pu |
-| # |             0 |                    0.0000 |            3.5355339 |    1.0000 |         1.0000 |
-| # |             1 |                    0.0531 |                3.618 |    1.0233 |         1.0014 |
-| # |             2 |                    0.1062 |                3.715 |    1.0508 |         1.0057 |
-| # |             3 |                    0.1593 |                3.802 |    1.0754 |         1.0128 |
-| # |             4 |                    0.2124 |                3.878 |    1.0969 |         1.0230 |
-| # |             5 |                    0.2655 |                3.944 |    1.1155 |         1.0363 |
-| # |             6 |                    0.3186 |                3.997 |    1.1305 |         1.0530 |
-| # |             7 |                    0.3717 |                4.040 |    1.1427 |         1.0733 |
-| # |             8 |                    0.4248 |                4.070 |    1.1512 |         1.0975 |
-| # |             9 |                    0.4780 |                4.089 |    1.1565 |         1.1262 |
-| # |            10 |                    0.5311 |                4.095 |    1.1582 |         1.1598 |
-#+TBLFM: @3$4=remote(tabSigGen,$srcVol_Vrms)::$5=$4/remote(tabSigGen,$srcVol_Vrms);%0.4f::$3=remote(tabSigGen,$w_Rads)* sqrt(remote(tabLineParams,$C_Sect_uF*$2)*remote(tabLineParams,$L_Sect_mH*$2) 10^-6 10^-3);%0.4f::$6=1/(cos($3));R%0.4f
+#+NAME: tabVoltDistResults
+|   | Measurement # | \theta(1-x/a) (Rad) | Measured Voltage (V) |   V/V_Src |   V/V_Src Theory |
+|---+---------------+----------------+----------------------+-----------+------------------|
+| ! |        N_Meas |                |          V_Meas_Vrms | Vratio_Pu | Vratio_Theory_Pu |
+| # |             0 |         0.5311 |                3.536 |    1.0001 |           1.0000 |
+| # |             1 |         0.4780 |                3.618 |    1.0233 |           1.0298 |
+| # |             2 |         0.4249 |                3.715 |    1.0508 |           1.0566 |
+| # |             3 |         0.3718 |                3.802 |    1.0754 |           1.0805 |
+| # |             4 |         0.3187 |                3.878 |    1.0969 |           1.1014 |
+| # |             5 |         0.2656 |                3.944 |    1.1155 |           1.1191 |
+| # |             6 |         0.2124 |                3.997 |    1.1305 |           1.1337 |
+| # |             7 |         0.1593 |                4.040 |    1.1427 |           1.1451 |
+| # |             8 |         0.1062 |                4.070 |    1.1512 |           1.1532 |
+| # |             9 |         0.0531 |                4.089 |    1.1565 |           1.1581 |
+| # |            10 |         0.0000 |                4.095 |    1.1582 |           1.1598 |
+#+TBLFM: @3$4=remote(tabSigGen,$srcVol_Vrms);%0.3f::$5=$4/remote(tabSigGen,$srcVol_Vrms);%0.4f::$3=remote(tabElecLength,$LElec_Rad)*(1-($2/remote(tabLineParams,$N_Sections));%0.4f::$6=cos($3)/(cos(remote(tabElecLength,$LElec_Rad)));R%0.4f
 
 #+BEGIN_SRC python :session :results file :output :var data=tabVoltDistResults :exports results :return saveName
 from tabulate import tabulate
@@ -113,16 +116,245 @@ import pandas as pd
 import matplotlib.pyplot as plt
 saveName="voltDistResults.png"
 df = pd.DataFrame(data[1:], columns=data[0])
-ha = df.plot(x="N_Meas",y=["Vratio_Pu","Vratio_The_Pu"],figsize=(8, 4))
+ha = df.plot(x="N_Meas",y=["Vratio_Pu","Vratio_Theory_Pu"],figsize=(8, 4),marker = "^")
+plt.ylabel("V Pu")
+plt.xlabel("N Measurement")
 plt.savefig(saveName)
 #+END_SRC
 
 #+ATTR_ORG: :width 500
 #+ATTR_LATEX:  :width 400pt
 #+ATTR_LATEX: :placement [H]
-#+caption: Voltage Ratio along the Transmission Line
-#+label: fig:
+#+caption: Theoretical and measured voltage profile along the model transmission line Results Plotted from Table ref:tabVoltDistResults
+#+NAME: vTransmissionLine
 #+RESULTS:
 [[file:voltDistResults.png]]
 
-**** TODO program in the correct voltage profile
+The theoretical and measured voltage distribution curves in Figure ref:vTransmissionLine match closely implying that the measurements are in agreement with Equation ref:eqVoltageDist.
+*** Phase change - Open circuit Termination
+The measured phase-shift of the voltage along the transmission  line relative to the sending end voltage for the centre and receiving end of the line are shown in Table ref:tabPhaseShift.
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Measured relative phase-shift and magnitude at receiving, middle and end of line (Normalised against sendig end magnitude)
+#+NAME: tabPhaseShift
+|   | Measurement Point | Angle \theta\degree | Magnitude |
+|---+-------------------+----------------+-----------|
+| ! |                   |          angle |       mag |
+|   | receiving end     |              0 |    1.1582 |
+|   | mid-point         |              0 |    1.1155 |
+|   | Sending end       |              0 |         1 |
+*** Phasor Plot
+
+#+NAME: pltPhasorQc
+#+BEGIN_SRC jupyter-python :session test :var angles=tabPhaseShift :exports results
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+fig, ax = plt.subplots(subplot_kw={'projection': 'polar'},figsize=(8,8))
+ax.set_yticks([0.5,1])
+angles = pd.DataFrame(angles[1:], columns=angles[0])
+colors = plt.cm.gist_rainbow(np.linspace(0, 1,len(angles)))
+legendList = []
+ax.set_xlim((-0.1,15/180*np.pi))
+for i in range(len(angles)):
+    plt.arrow(float(angles['angle'][i])/180.*np.pi, 0, 0, angles['mag'][i], linewidth = 2, head_width=0.04,
+                    edgecolor = colors[i], facecolor =colors[i], length_includes_head=True)
+    legendList.append(f"{angles['!'][i]} Angle $\\theta$={angles['angle'][i]}$\degree$")
+leg = ax.legend(legendList)
+#+End_src
+
+#+ATTR_ORG: :width 300
+#+ATTR_LATEX:  :width 300pt
+#+ATTR_LATEX: :placement [H]
+#+caption: Matched Impedance Phase shift of mid point and receiving end relative to sending end
+#+NAME: figMatchedImpedacePhaseShiftPhasor
+#+RESULTS: pltPhasorQc
+[[file:./.ob-jupyter/621061c1daaddf2fe58a6832473ea1f8eefac9f5.png]]
+
+** Surge Impedance Load Test (Part d)
+*** Procedure
+- Matched impedance load Z_0 attached at the end of the transmission line.
+- DVM Measurements of voltage distribution taken
+- Oscilloscope measurements of phase for the mid point and end taken.
+*** Voltage distribution - Matched termination
+Measurements are again taken in then equally spaced increments along the length of the transmission line, results are tabulated in Table ref:tabVoltDistResults_Matched and plotted against measurement point in Figure ref:figVtrans_Matched.
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Voltage distribution along the model transmission line with a matched termination
+#+NAME: tabVoltDistResults_Matched
+|   | Measurement # | Measured Voltage (V) |   V/V_Src |
+|---+---------------+----------------------+-----------|
+| ! |        N_Meas |          V_Meas_Vrms | Vratio_Pu |
+| # |             0 |                3.536 |     1.000 |
+| # |             1 |                3.509 |     0.992 |
+| # |             2 |                3.505 |     0.991 |
+| # |             3 |                3.502 |     0.991 |
+| # |             4 |                3.500 |     0.990 |
+| # |             5 |                3.496 |     0.989 |
+| # |             6 |                3.492 |     0.988 |
+| # |             7 |                3.489 |     0.987 |
+| # |             8 |                3.486 |     0.986 |
+| # |             9 |                3.483 |     0.985 |
+| # |            10 |                3.479 |     0.984 |
+#+TBLFM: $4=$3/remote( tabSigGen,  $srcVol_Vrms);%0.3f
+
+#+BEGIN_SRC python :session :results file :output :var data=tabVoltDistResults_Matched :exports results :return saveName
+from tabulate import tabulate
+import pandas as pd
+import matplotlib.pyplot as plt
+saveName="voltDistResults_Matched.png"
+df = pd.DataFrame(data[1:], columns=data[0])
+ha = df.plot(x="N_Meas",y=["Vratio_Pu"],figsize=(8, 4),marker = "^")
+plt.ylabel("V/VSending")
+plt.savefig(saveName)
+#+END_SRC
+
+#+ATTR_ORG: :width 500
+#+ATTR_LATEX:  :width 400pt
+#+ATTR_LATEX: :placement [H]
+#+caption: Transmission line voltage profile terminated with a matched impedance and normalised against sending end voltage.
+#+NAME: figVtrans_Matched
+#+RESULTS:
+[[file:voltDistResults_Matched.png]]
+From Figure ref:figVtrans_Matched we see that the voltage distribution along the line is indeed very flat deviating to a maximum of \approx2% deviation from the sending end voltage. In theory there should be no deviation from the sending end voltage however this deviation may be due to the terminating impedance being slightly lower than the sending end due to tolerance. The outlier
+*** Phase change - Matched termination
+Phase angle for the model line with matched termination is shown in Table ref:tabPhaseShift_Matched. These are measured relative to the sending end voltage. Taking the sending end voltage as the origin, with the measurements of phase angel shown below it can be seen that the phase angle along the line varies linearly with the electrical length since the measurement point of the end point is by definition twice the electrical length of the mid point and has twice the phase-shift. It is also noted that the total phase shift along the line is roughly equal to the electrical length of the line.
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Measured Relative Phase-shift along Model transmission line measured relative to sending end
+#+NAME: tabPhaseShift_Matched
+| mid-point angle \theta\degree | receiving end angle \theta\degree |
+|--------------------------+------------------------------|
+|                       15 |                           30 |
+** Less than Matched Impedance (Part e)
+*** Voltage Distribution - Less than Matched
+The recorded voltage profile for a termination impedance << z_{0} is presented in table ref:tabLessThanMatchedImpedance. The voltages normalised against sending end are plotted against 1 point in Figure ref:figVtrans_LessThanMatched. Here the voltage again tends to fall along the line similar to the closed-circuit case, however with a significantly lower magnitude. The voltage profile seems to display an exponential decay.
+
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Voltage Distribution Measurements for termination with less than matched impedance
+#+NAME: tabLessThanMatchedImpedance
+|   | Measurement # | Measured Voltage (V) |   V/V_Src |
+|---+---------------+----------------------+-----------|
+| ! |        N_Meas |          V_Meas_Vrms | Vratio_Pu |
+| # |             0 |                3.536 |     1.000 |
+| # |             1 |                3.364 |     0.951 |
+| # |             2 |                3.227 |     0.913 |
+| # |             3 |                3.097 |     0.876 |
+| # |             4 |                2.976 |     0.842 |
+| # |             5 |                2.867 |     0.811 |
+| # |             6 |                2.772 |     0.784 |
+| # |             7 |                2.692 |     0.761 |
+| # |             8 |                2.632 |     0.744 |
+| # |             9 |                2.593 |     0.733 |
+| # |            10 |                2.577 |     0.729 |
+#+TBLFM: $4=$3/remote(tabSigGen,  $srcVol_Vrms);%0.3f
+
+#+BEGIN_SRC python :session :results file :output :var data= tabLessThanMatchedImpedance :exports results :return saveName
+from tabulate import tabulate
+import pandas as pd
+import matplotlib.pyplot as plt
+saveName="voltDistResults_Matched.png"
+df = pd.DataFrame(data[1:], columns=data[0])
+ha = df.plot(x="N_Meas",y=["Vratio_Pu"],figsize=(8, 4),marker = "^")
+plt.ylabel("V Pu")
+plt.xlabel("N Measurement")
+plt.savefig(saveName)
+#+END_SRC
+
+#+ATTR_ORG: :width 500
+#+ATTR_LATEX:  :width 400pt
+#+ATTR_LATEX: :placement [H]
+#+caption: Transmission line voltage profile terminated with in impedance less than the surge impedance and normalised against sending end voltage.
+#+NAME: figVtrans_LessThanMatched
+#+RESULTS:
+[[file:voltDistResults_Matched.png]]
+
+*** Phase Change - Less than Matched
+Phase angle measurements for a line terminated with less than the characteristic impedance at them middle and end of the line are shown in Table ref:tabPhaseShift_LessThanZ0.  In this case the relationship between the electrical length along the line again seems to be relatively linear, However the absolute phase difference is substantially larger than the matched or open circuit tests.
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Measured Relative Phase-shift along Model transmission line measured relative to sending end
+#+NAME: tabPhaseShift_LessThanZ0
+| mid-point angle \theta\degree | receiving end angle \theta\degree |
+|--------------------------+------------------------------|
+|                       22 |                           50 |
+
+*** TODO Reactive Compensation
+** Open circuit on double length line (Part f)
+*** Double Electrical Length Calculations
+**** Experimental Parameters
+Table ref:tabSigGen_DoubleFreq shows the experimental parameters with the modified excitation frequency used in this section.
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Signal generator settings with modified excitation frequency
+#+NAME: tabSigGen_DoubleFreq
+|   | f (Hz) | \omega (Rad/s) | V_Src (V_pp) | V_Src (RMS) |
+|---+--------+-----------+--------------+-------------|
+| _ | f_Hz   | w_Rads    | srcVol_Vpp   | srcVol_Vrms |
+| # | 1400   | 8796.2    | 10           | 3.5355339   |
+#+TBLFM: $f_Hz=remote(tabSigGen,$f_Hz)*2::$srcVol_Vrms=($srcVol_Vpp/2)*(1/sqrt(2))::$w_Rads=$f_Hz*2*3.1415
+**** Electrical Length
+Electrical length is again calculated for a double length line.
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Model Transmission line calculated Electrical Length according to Equation ref:eqElectricalLength and Transmission line parameters in ref:tabLineParams excited with a frequency of 1400Hz.
+#+NAME: tabElecLength_Double
+|   | \theta (Rad)   | \theta (Deg) |
+|---+-----------+---------|
+| _ | LElec_Rad |         |
+| # | 1.0621    | 60.8556 |
+#+TBLFM: $3=($2/3.1415)*180;%0.4f::$LElec_Rad=remote(tabSigGen_DoubleFreq,$w_Rads)* sqrt(remote( tabLineParams,$C_Tot_uF)*remote(tabLineParams,$L_Tot_mH) 10^-6 10^-3);%0.4f
+*** Voltage Distribution
+The line was exited with the same voltage magnitude as section C however with twice the excitation frequency of the prior experiment (1400Hz). The measurements of voltage along with the theoretical voltage distribution calculated according to Equation ref:eqVoltageDist are tabulated in Table ref:tabVoltDistResults_doubleFreq. The measured and actual voltage distribution on the line is shown in Figure ref:figVTransmissionLineDoubleFreq.
+
+From Figure ref:figVTransmissionLineDoubleFreq  we see a very similar curve to section C (Figure ref:vTransmissionLine) however this time the receiving end voltage has risen in to ~2.11\times the sending end voltage, while for the half length line this was only \approx1.15\times. This finding shows the nonlinearity in the relationship between electrical length \theta and  received voltage eluded to in Equation ref:eqVoltageDist. As is section C the voltage distribution predicted by Equation ref:eqVoltageDist match the measured results closely.
+
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Voltage measurements along the model transmission line terminated in open circuit and excited at 1400Hz.
+#+NAME: tabVoltDistResults_doubleFreq
+|   | Measurement # | \theta(1-x/a) (Rad) | Measured Voltage (V) |   V/V_Src |   V/V_Src Theory |
+|---+---------------+----------------+----------------------+-----------+------------------|
+| ! |        N_Meas |                |          V_Meas_Vrms | Vratio_Pu | Vratio_Theory_Pu |
+| # |             0 |         1.0621 |                3.536 |    1.0001 |           1.0000 |
+| # |             1 |         0.9559 |                4.202 |    1.1885 |           1.1845 |
+| # |             2 |         0.8497 |                4.848 |    1.3712 |           1.3556 |
+| # |             3 |         0.7435 |                5.436 |    1.5375 |           1.5114 |
+| # |             4 |         0.6373 |                5.961 |    1.6860 |           1.6502 |
+| # |             5 |         0.5311 |                6.417 |    1.8150 |           1.7704 |
+| # |             6 |         0.4248 |                6.795 |    1.9219 |           1.8707 |
+| # |             7 |         0.3186 |                7.095 |    2.0068 |           1.9499 |
+| # |             8 |         0.2124 |                7.313 |    2.0684 |           2.0071 |
+| # |             9 |         0.1062 |                7.442 |    2.1049 |           2.0417 |
+| # |            10 |         0.0000 |                7.485 |    2.1171 |           2.0532 |
+#+TBLFM: @3$4=remote(tabSigGen,$srcVol_Vrms);%0.3f::$5=$4/remote(tabSigGen,$srcVol_Vrms);%0.4f::$3=remote(tabElecLength_Double,$LElec_Rad)*(1-($2/remote(tabLineParams,$N_Sections));%0.4f::$6=cos($3)/(cos(remote(tabElecLength_Double,$LElec_Rad)));R%0.4f
+
+#+BEGIN_SRC python :session :results file :output :var data=tabVoltDistResults_doubleFreq :exports results :return saveName
+from tabulate import tabulate
+import pandas as pd
+import matplotlib.pyplot as plt
+saveName="vTransmissionLine_OcDoubleFreq.png"
+df = pd.DataFrame(data[1:], columns=data[0])
+ha = df.plot(x="N_Meas",y=["Vratio_Pu","Vratio_Theory_Pu"],figsize=(8, 4),marker = "^")
+plt.ylabel("V Pu")
+plt.xlabel("N Measurement")
+plt.savefig(saveName)
+#+END_SRC
+
+#+ATTR_ORG: :width 500
+#+ATTR_LATEX:  :width 400pt
+#+ATTR_LATEX: :placement [H]
+#+caption: Theoretical and measured voltage profile along the model transmission line terminated in open circuit and excited at 1400Hz results plotted from Table ref:tabVoltDistResults_doubleFreq.
+#+NAME: figVTransmissionLineDoubleFreq
+#+RESULTS:
+[[file:vTransmissionLine_OcDoubleFreq.png]]
+
+The theoretical and measured voltage distribution curves in Figure ref:vTransmissionLine match closely implying that the measurements are in agreement with Equation ref:eqVoltageDist.
+*** Phase change along the line
+The measured phase-shift of the voltage  along the transmission line relative to the sending end voltage for the centre and receiving end of the line are shown in Table ref:tabPhaseShift_DoubleFreq. As with section C there is no phase-shift observed along the line.
+
+#+ATTR_LATEX: placement [H] :booktabs t:
+#+caption: Measured relative phase-shift and magnitude at receiving, middle and end of line (Normalised against sending end magnitude) for line excited at 1400Hz.
+#+NAME: tabPhaseShift_DoubleFreq
+|   | Measurement Point | Angle \theta\degree | Magnitude |
+|---+-------------------+----------------+-----------|
+| ! |                   |          angle |       mag |
+|   | receiving end     |              0 |    1.1582 |
+|   | mid-point         |              0 |    1.1155 |
+|   | Sending end       |              0 |         1 |
+
+*** TODO Reactive Compensation
+test
